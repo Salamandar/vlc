@@ -1,0 +1,146 @@
+option('binary-version',      type: 'string',  value: '',       description: 'To avoid plugins cache problem between binary version')
+option('macosx-sdk',          type: 'string',  value: '',       description: 'Compile using the SDK in DIR')
+option('macosx-version-min',  type: 'string',  value: '',       description: 'compile for Mac OS X VERSION and above')
+option('winstore-app',        type: 'boolean', value: 'false',  description: 'Build targetted for Windows Store apps')
+
+option('contrib-dir',         type: 'string',  value: '',       description: 'search for 3rd party libraries in DIR/include and DIR/lib')
+option('dbus',                type: 'boolean', value: 'true',   description: 'compile D-Bus message bus support')
+option('libfuzzer',           type: 'boolean', value: 'false',  description: 'use libFuzzer library from DIR and triggers sanitize coverage')
+option('lua-c',               type: 'boolean', value: 'true',   description: 'LUA byte compiler')
+option('lua',                 type: 'boolean', value: 'true',   description: 'LUA scripting support')
+option('live555',             type: 'boolean', value: 'true',   description: 'enable RTSP input through live555')
+option('optimize-memory',     type: 'boolean', value: 'false',  description: 'optimize memory usage over performance')
+option('run-as-root',         type: 'boolean', value: 'false',  description: 'allow running VLC as root')
+option('stream-out',          type: 'boolean', value: 'true',   description: 'streaming output')
+option('vlm',                 type: 'boolean', value: 'true',   description: 'stream manager')
+option('addonmanagermodules', type: 'boolean', value: 'true',   description: 'the addons manager modules')
+option('linsys',              type: 'boolean', value: 'true',   description: 'Linux Linear Systems Ltd. SDI and HD-SDI input cards')
+option('v4l2',                type: 'boolean', value: 'true',   description: 'Video4Linux version 2')
+option('decklink',            type: 'boolean', value: 'true',   description: 'Blackmagic DeckLink SDI input')
+option('decklink_sdk',        type: 'string',  value: '',       description: 'location of Blackmagic DeckLink SDI SDK')
+
+option('vcd',                 type: 'boolean', value: 'true',   description: 'built-in VCD and CD-DA support')
+option('libcddb',             type: 'boolean', value: 'true',   description: 'CDDB for Audio CD')
+option('screen',              type: 'boolean', value: 'true',   description: 'screen capture')
+option('gme',                 type: 'boolean', value: 'false',  description: 'Use Game Music Emu')
+option('sid',                 type: 'boolean', value: 'false',  description: 'C64 sid demux support')
+
+
+# TODO
+
+
+
+option('realrtsp',            type: 'boolean', value: 'false',  description: 'Real RTSP module')
+option('macosx-qtkit',        type: 'boolean', value: 'true',   description: 'Mac OS X qtsound (audio) module (default enabled on Mac OS X <= v10.11')
+option('macosx-avfoundation', type: 'boolean', value: 'true',   description: 'Mac OS X avcapture (video) module (default enabled on Mac OS X')
+option('mod',                 type: 'boolean', value: 'true',   description: 'do not use libmodplug')
+option('mpc',                 type: 'boolean', value: 'true',   description: 'do not use libmpcdec')
+option('fixed',               type: 'boolean', value: 'false',  description: 'libwma-fixed module')
+option('omxil',               type: 'boolean', value: 'false',  description: 'openmax il codec module')
+option('rpi-omxil',           type: 'boolean', value: 'false',  description: 'openmax il configured for raspberry pi')
+option('crystalhd',           type: 'boolean', value: 'true',   description: 'crystalhd codec plugin')
+option('mad',                 type: 'string',  value: '',       description: 'path to libmad')
+option('mad-path',            type: 'boolean', value: 'true',   description: 'libmad module')
+option('gst-decode',          type: 'boolean', value: 'true',   description: 'GStreamer based decoding support (currently supports only video decoding)')
+option('merge-ffmpeg',        type: 'boolean', value: 'false',  description: 'merge FFmpeg-based plugins')
+option('avcodec',             type: 'boolean', value: 'true',   description: 'libavcodec codec')
+option('libva',               type: 'boolean', value: 'true',   description: 'VAAPI GPU decoding support (libVA)')
+option('dxva2',               type: 'boolean', value: 'true',   description: 'DxVA2 GPU decoding support')
+option('d3d11va',             type: 'boolean', value: 'true',   description: 'D3D11 GPU decoding support')
+option('avformat',            type: 'boolean', value: 'true',   description: 'libavformat containers')
+option('swscale',             type: 'boolean', value: 'true',   description: 'libswscale image scaling and conversion')
+option('postproc',            type: 'boolean', value: 'true',   description: 'libpostproc image post-processing')
+option('faad',                type: 'boolean', value: 'true',   description: 'faad codec')
+option('vpx',                 type: 'boolean', value: 'true',   description: 'libvpx VP8/VP9 encoder and decoder')
+option('a52',                 type: 'boolean', value: 'true',   description: 'A/52 support with liba52')
+option('a52-path',            type: 'string',  value: '',       description: 'a52 headers and libraries')
+option('tremor',              type: 'boolean', value: 'false',  description: 'Tremor decoder support')
+option('png',                 type: 'boolean', value: 'true',   description: 'PNG support')
+option('jpeg',                type: 'boolean', value: 'true',   description: 'JPEG support')
+option('bpg',                 type: 'boolean', value: 'false',  description: 'BPG support')
+option('x262',                type: 'boolean', value: 'false',  description: 'H262 encoding support with static libx262')
+option('x26410b',             type: 'boolean', value: 'false',  description: 'H264 10-bit encoding support with static libx264')
+option('x264',                type: 'boolean', value: 'true',   description: 'H264 encoding support with libx264')
+option('zvbi',                type: 'boolean', value: 'true',   description: 'VBI (inc. Teletext) decoding support with libzvbi')
+option('telx',                type: 'boolean', value: 'true',   description: 'Teletext decoding module (conflicting with zvbi) (default enabled if zvbi is absent')
+option('libass',              type: 'boolean', value: 'true',   description: 'Subtitle support using libass')
+option('aribsub',             type: 'boolean', value: 'true',   description: 'ARIB Subtitles support')
+option('tiger',               type: 'boolean', value: 'true',   description: 'Tiger rendering library for Kate streams')
+option('css',                 type: 'boolean', value: 'true',   description: 'CSS selector engine')
+option('xcb',                 type: 'boolean', value: 'true',   description: 'X11 support with XCB')
+option('xvideo',              type: 'boolean', value: 'true',   description: 'XVideo support')
+option('vdpau',               type: 'boolean', value: 'true',   description: 'VDPAU hardware support')
+option('wayland',             type: 'boolean', value: 'true',   description: 'Wayland support')
+option('sdl-image',           type: 'boolean', value: 'true',   description: 'SDL image support')
+option('fontconfig',          type: 'boolean', value: 'true',   description: 'fontconfig support')
+option('freetype',            type: 'boolean', value: 'true',   description: 'freetype support')
+option('fribidi',             type: 'boolean', value: 'true',   description: 'fribidi support')
+option('harfbuzz',            type: 'boolean', value: 'true',   description: 'harfbuzz support')
+option('fontconfig',          type: 'boolean', value: 'true',   description: 'fontconfig support')
+option('default-font-path',   type: 'string',  value:  '',      description: 'Path to the default font')
+option('default-monospace-font-path',         type: 'string', value: '', description: 'Path to the default font')
+option('default-font-family-name',            type: 'string', value: '', description: 'Path to the default font family')
+option('default-monospace-font-family-name',  type: 'string', value: '', description: 'Path to the default font family')
+option('directx',             type: 'boolean', value: 'true',   description: 'Microsoft DirectX support (Windows only)')
+option('kva',                 type: 'boolean', value: 'true',   description: 'support the K Video Accelerator KVA (default enabled on OS/2)])],,')
+option('mmal',                type: 'boolean', value: 'true',   description: 'Multi-Media Abstraction Layer (MMAL) hardware plugin')
+option('pulse',               type: 'boolean', value: 'true',   description: 'use the PulseAudio client library')
+option('alsa',                type: 'boolean', value: 'true',   description: 'support the Advanced Linux Sound Architecture')
+option('oss',                 type: 'boolean', value: 'true',   description: 'support the Open Sound System OSS (default enabled on FreeBSD/NetBSD/DragonFlyBSD')
+option('sndio',               type: 'boolean', value: 'true',   description: 'support the OpenBSD sndio')
+option('wasapi',              type: 'boolean', value: 'true',   description: 'use the Windows Audio Session API')
+option('jack',                type: 'boolean', value: 'true',   description: 'do not use jack')
+option('opensles',            type: 'boolean', value: 'false',  description: 'Android OpenSL ES audio module')
+option('tizen-audio',         type: 'boolean', value: 'true',   description: 'Tizen audio module (default enabled on Tizen')
+option('kai',                 type: 'boolean', value: 'true',   description: 'support the K Audio Interface KAI (default enabled on OS/2')
+option('qt',                  type: 'boolean', value: 'true',   description: 'Qt UI support')
+option('skins2',              type: 'boolean', value: 'true',   description: 'skins interface module')
+option('libtar',              type: 'boolean', value: 'true',   description: 'libtar support for skins2')
+option('macosx',              type: 'boolean', value: 'true',   description: 'Mac OS X gui support (default enabled on Mac OS X')
+option('sparkle',             type: 'boolean', value: 'true',   description: 'Sparkle update support for OS X (default enabled on Mac OS X')
+option('breakpad-url',        type: 'string',  value: '',       description: 'Enable Breakpad reporter using given URL')
+option('minimal-macosx',      type: 'boolean', value: 'false',  description: 'Minimal Mac OS X support')
+option('ncurses',             type: 'boolean', value: 'true',   description: 'ncurses text-based interface')
+option('lirc',                type: 'boolean', value: 'false',  description: 'lirc support')
+option('projectm',            type: 'boolean', value: 'true',   description: 'projectM visualization plugin')
+option('vsxu',                type: 'boolean', value: 'true',   description: 'Vovoid VSXu visualization plugin')
+option('libgcrypt',           type: 'boolean', value: 'true',   description: 'gcrypt support')
+option('gnutls',              type: 'boolean', value: 'true',   description: 'GNU TLS TLS/SSL support')
+option('taglib',              type: 'boolean', value: 'true',   description: 'do not use TagLib')
+option('kwallet',             type: 'boolean', value: 'true',   description: 'use kwallet (via D-Bus) for keystore')
+option('update-check',        type: 'boolean', value: 'false',  description: 'update checking system')
+option('osx-notifications',   type: 'boolean', value: 'false',  description: 'osx notification plugin')
+option('libplacebo',          type: 'boolean', value: 'true',   description: 'disable libplacebo support')
+option('kde-solid-path',      type: 'string',  value: '',       description: 'KDE Solid actions directory (auto')
+option('vlc',                 type: 'boolean', value: 'true',   description: 'build the VLC media player')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Default = true, automatically disabled if invalid architecture.
+option('ssp',                 type: 'boolean', value: 'true',   description: 'stack smashing protection (default enabled for optimized builds)')
+option('mmx',                 type: 'boolean', value: 'true',   description: 'MMX Optimizations')
+option('sse',                 type: 'boolean', value: 'true',   description: 'SSE Optimizations')
+option('neon',                type: 'boolean', value: 'true',   description: 'NEON Optimizations')
+option('arm64',               type: 'boolean', value: 'true',   description: 'ARM64 Optimizations')
+option('altivec',             type: 'boolean', value: 'true',   description: 'Altivec Optimizations')
+
+
+
+
+option('PKG_CONFIG_PATH',     type: 'string', value: '',        description: 'Paths where to find .pc not at the default location')
+
+
+
+
+
