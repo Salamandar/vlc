@@ -112,7 +112,7 @@ option('update-check',        type: 'boolean', value: 'false',  description: 'up
 option('osx-notifications',   type: 'boolean', value: 'false',  description: 'osx notification plugin')
 option('libplacebo',          type: 'boolean', value: 'true',   description: 'disable libplacebo support')
 option('kde-solid-path',      type: 'string',  value: '',       description: 'KDE Solid actions directory (auto')
-option('vlc',                 type: 'boolean', value: 'true',   description: 'build the VLC media player')
+option('build-vlc',                 type: 'boolean', value: 'true',   description: 'build the VLC media player')
 
 
 

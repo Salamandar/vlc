@@ -1,20 +1,11 @@
 
 project('vlc',
   [ 'c', 'cpp' ],
-  default_options : ['c_std=c11', 'cpp_std=c++11'],
+  default_options : ['c_std=gnu11', 'cpp_std=c++11'],
   version: '4.0.0',
   license: 'Copyright 1999-2018 VLC authors and VideoLAN',
   meson_version: '>=0.40.0',
 )
-
-################################################################################
-# Version information
-
-version_rev = 0
-version_info= 'dev'
-version_codename = 'Otto Chriek'
-
-copyright_years = '-'.join([ '1996', '2018' ])
 
 ################################################################################
 # Configuration
@@ -27,8 +18,57 @@ cx = meson.get_compiler('cpp')
 c_args = [ ]
 l_args = [ ]
 
-windows = import('windows')
-i18n    = import('i18n')
+windows   = import('windows')
+i18n      = import('i18n')
+pkgconfig = import('pkgconfig')
+
+################################################################################
+# Version information
+
+version_rev = 0
+version_dev= 'dev'
+version_codename = 'Otto Chriek'
+
+copyright_years = '-'.join([ '1996', '2018' ])
+copyright_message = 'Copyright © @0@ the VideoLAN team'.format(copyright_years)
+
+
+conf.set_quoted('PACKAGE_VERSION', meson.project_version())
+conf.set_quoted('VERSION',         meson.project_version())
+conf.set_quoted('PACKAGE_NAME',    meson.project_name())
+conf.set_quoted('VERSION_MESSAGE', meson.project_version()+' '+version_codename)
+
+
+version_split = meson.project_version().split('.')
+conf.set('VERSION_MAJOR',   version_split[0])
+conf.set('VERSION_MINOR',   version_split[1])
+conf.set('VERSION_REVISION',version_split[2])
+
+
+conf.set_quoted('COPYRIGHT_MESSAGE',        copyright_message)
+conf.set_quoted('COPYRIGHT_YEARS',          copyright_years)
+conf.set_quoted('CONFIGURE_LINE',           '')
+conf.set_quoted('PACKAGE_VERSION_MAJOR',    version_split[0])
+conf.set_quoted('PACKAGE_VERSION_MINOR',    version_split[1])
+conf.set_quoted('PACKAGE_VERSION_REVISION', '@0@'.format(version_rev))
+conf.set_quoted('PACKAGE_VERSION_EXTRA',    version_split[2])
+conf.set_quoted('PACKAGE_VERSION_DEV',      version_dev)
+
+
+conf.set_quoted('VLC_COMPILE_BY',    run_command('whoami').stdout().strip())
+conf.set_quoted('VLC_COMPILE_HOST',  run_command('hostname', '-f').stdout().strip())
+conf.set_quoted('VLC_COMPILER',      cc.get_id())
+
+
+
+conf.set_quoted('SYSDATADIR',    get_option('datadir'))
+conf.set_quoted('LIBDIR',        get_option('libdir'))
+conf.set_quoted('LIBEXECDIR',    get_option('libexecdir'))
+conf.set_quoted('LOCALEDIR',     get_option('localedir'))
+conf.set_quoted('PKGDATADIR',    join_paths(get_option('datadir'),   meson.project_name()))
+conf.set_quoted('PKGLIBDIR',     join_paths(get_option('libdir'),    meson.project_name()))
+conf.set_quoted('PKGLIBEXECDIR', join_paths(get_option('libexecdir'),meson.project_name()))
+
 
 ################################################################################
 # Check for the operating system
@@ -160,6 +200,15 @@ endif
 
 
 
+if platform_osx
+  libext = '.dylib'
+elif platform_win64
+  libext = '.dll'
+else
+  libext = '.so'
+endif
+conf.set_quoted('LIBEXT', libext)
+
 ################################################################################
 # Check for compiler properties
 
@@ -176,21 +225,31 @@ c_args += cc.get_supported_arguments([
 
 
 c_args += [
-  '-D_FORTIFY_SOURCE=2',    # Define to 2 to get glibc warnings.
+  # '-D_FORTIFY_SOURCE=2',    # Define to 2 to get glibc warnings.
   '-D_FILE_OFFSET_BITS=64', # Define to 64 for large files support.
 
   '-D_THREAD_SAFE',         # Same as _REENTANT for some other OSes.
   '-D__LIBVLC__',           # Define within the LibVLC source code tree.
   '-DWIN32_LEAN_AND_MEAN',  # Define to limit the scope of <windows.h>.
+  '-D_GNU_SOURCE',
 ]
 
 
-type = 'max_align_t'
-conf.set('HAVE_' + type.underscorify().to_upper(), cc.has_header_symbol('stddef.h', type))
-type = 'gettimeofday'
-conf.set('HAVE_' + type.underscorify().to_upper(), cc.has_header_symbol('sys/time.h', type))
-type = 'struct timespec'
-conf.set('HAVE_' + type.underscorify().to_upper(), cc.has_header_symbol('time.h', type))
+check_headers = [
+  'features.h',
+  'netinet_tcp.h',
+  'search.h',
+  'threads.h',
+  'pthread.h',
+]
+
+foreach header : check_headers
+  conf.set('HAVE_' + header.underscorify().to_upper(), cx.has_header(header))
+endforeach
+
+
+threads = dependency('threads')
+dl = cx.find_library('dl')
 
 ################################################################################
 # Check for tools
@@ -198,6 +257,12 @@ conf.set('HAVE_' + type.underscorify().to_upper(), cc.has_header_symbol('time.h'
 desktop_file_validate = find_program('desktop-file-validate')
 
 
+
+# TODO
+have_dynamic_libs = true
+
+# TODO
+have_dbus = true
 
 
 ################################################################################
@@ -209,19 +274,24 @@ desktop_file_validate = find_program('desktop-file-validate')
 # Sources
 
 
+rootInclude = include_directories('.', 'include')
+c_args += [
+  '-DHAVE_CONFIG_H'
+]
+add_project_arguments(c_args, language: [ 'c', 'cpp' ])
+
+# Needs to be here
+subdir('compat')
+
 configure_file(
   output: 'config_definitions.h',
   configuration: conf,
 )
-add_project_arguments(
-  '-DHAVE_CONFIG_H',
-  language: [ 'c', 'cpp' ]
-)
 
 
-rootInclude = include_directories('.', 'include')
-
-subdir('compat')
-
+subdir('include')
+subdir('src')
+subdir('lib')
+subdir('bin')
 # 330
 
