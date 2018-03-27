@@ -1,13 +1,13 @@
 # Building vlc
 #
 if BUILD_VLC
-if HAVE_OSX
-bin_PROGRAMS = vlc-osx
-noinst_PROGRAMS = vlc-osx-static
-else
-bin_PROGRAMS = vlc
-noinst_PROGRAMS = vlc-static
-endif
+	if HAVE_OSX
+		bin_PROGRAMS = vlc-osx
+		noinst_PROGRAMS = vlc-osx-static
+	else
+		bin_PROGRAMS = vlc
+		noinst_PROGRAMS = vlc-static
+	endif
 endif
 EXTRA_DIST = vlc_win32_rc.rc.in
 CLEANFILES = vlc_win32_rc.rc
@@ -88,11 +88,11 @@ vlc_static_LDFLAGS = $(vlc_LDFLAGS) -no-install -static
 # Root wrapper
 #
 if BUILD_VLC
-if !HAVE_WIN32
-if !HAVE_OS2
-bin_PROGRAMS += vlc-wrapper
-endif
-endif
+	if !HAVE_WIN32
+		if !HAVE_OS2
+			bin_PROGRAMS += vlc-wrapper
+		endif
+	endif
 endif
 vlc_wrapper_SOURCES = rootwrap.c
 vlc_wrapper_LDADD = $(SOCKET_LIBS)

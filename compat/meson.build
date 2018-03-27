@@ -75,7 +75,7 @@ endforeach
 # Special cases
 functions_str = [ 'strlcpy', 'strnstr' ]
 foreach function : functions_str
-  has_fn = cc.has_header_symbol('string.h',  function)
+  has_fn = false # cc.has_header_symbol('string.h',  function)
   conf.set('HAVE_' + function.underscorify().to_upper(), has_fn)
   if not has_fn
     compat_sources += [ function + '.c' ]

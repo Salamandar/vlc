@@ -9,16 +9,3 @@ configure_file(
   ],
   capture: true,
 )
-
-
-###############################################################################
-# GIT revision
-
-vcs_tag(
-  input : 'revision.h.in',
-  output: 'revision.h',
-  command: [
-    'git', '--git-dir=@0@/.git'.format(meson.source_root()),
-    'describe', '--tags', '--long', '--match', '?.*.*', '--always',
-  ],
-)

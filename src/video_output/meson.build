@@ -1,0 +1,16 @@
+libvlccore_sources += files(
+  'control.c',
+  'display.c',
+  'inhibit.c',
+  'interlacing.c',
+  'opengl.c',
+  'snapshot.c',
+  'video_epg.c',
+  'video_output.c',
+  'video_text.c',
+  'video_widgets.c',
+  'vout_intf.c',
+  'vout_subpictures.c',
+  'vout_wrapper.c',
+  'window.c',
+)

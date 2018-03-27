@@ -16,6 +16,7 @@ libvlc_sources = [
   'renderer_discoverer.c',
   'video.c',
   'vlm.c',
+  revision_source,
 ]
 libvlc_lflags = [ ]
 
@@ -64,9 +65,12 @@ libvlc = library('vlc',
     compat,
     libvlccore,
   ],
+  dependencies: [
+    math,
+    threads,
+  ],
   link_args: libvlc_lflags,
   # soversion: '11:0:6',
-
 )
 
 

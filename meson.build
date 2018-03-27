@@ -36,6 +36,7 @@ copyright_message = 'Copyright © @0@ the VideoLAN team'.format(copyright_years)
 conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 conf.set_quoted('VERSION',         meson.project_version())
 conf.set_quoted('PACKAGE_NAME',    meson.project_name())
+conf.set_quoted('PACKAGE_STRING',  meson.project_name()+' '+meson.project_version())
 conf.set_quoted('VERSION_MESSAGE', meson.project_version()+' '+version_codename)
 
 
@@ -73,10 +74,14 @@ conf.set_quoted('PKGLIBEXECDIR', join_paths(get_option('libexecdir'),meson.proje
 ################################################################################
 # Check for the operating system
 
-platform_win64 = host_machine.system() == 'windows'
-platform_osx   = host_machine.system() == 'darwin'
-platform_linux = host_machine.system() == 'linux'
-platform_bsd   = host_machine.system() == 'bsd'
+platform_win64 =( host_machine.system() == 'windows'
+               or host_machine.system() == 'win32'
+               or host_machine.system() == 'cygwin' )
+platform_osx   =  host_machine.system() == 'darwin'
+platform_os2   =  host_machine.system().contains('os2')
+platform_bsd   =  host_machine.system().contains('bsd')
+platform_linux =  host_machine.system() == 'linux'
+platform_nacl  =  host_machine.system() == 'nacl'
 
 # Test for Android
 platform_android = cc.run('''
@@ -237,7 +242,7 @@ c_args += [
 
 check_headers = [
   'features.h',
-  'netinet_tcp.h',
+  'netinet/tcp.h',
   'search.h',
   'threads.h',
   'pthread.h',
@@ -249,7 +254,14 @@ endforeach
 
 
 threads = dependency('threads')
-dl = cx.find_library('dl')
+math    = cx.find_library('m')
+dl      = cx.find_library('dl')
+
+libanl  = cx.find_library('anl', required: false)
+
+if get_option('dbus')
+  dbus = dependency('dbus-1')
+endif
 
 ################################################################################
 # Check for tools

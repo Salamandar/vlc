@@ -1,0 +1,16 @@
+libvlccore_sources += files(
+  'aout.c',
+  'art.c',
+  'control.c',
+  'engine.c',
+  'fetcher.c',
+  'item.c',
+  'loadsave.c',
+  'preparser.c',
+  'renderer.c',
+  'search.c',
+  'services_discovery.c',
+  'sort.c',
+  'thread.c',
+  'tree.c',
+)
