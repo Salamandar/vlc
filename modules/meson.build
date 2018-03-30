@@ -38,47 +38,46 @@ endif
 # 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < "$^" > "$@.tmp"
 # 	$(AM_V_at)mv -f -- "$@.tmp" "$@"
 
+plugins = [
+  'access',
+  'arm_neon',
+  'audio_filter',
+  'audio_mixer',
+  'audio_output',
+  'codec',
+  'control',
+  'demux',
+  'gui',
+  'keystore',
+  'logger',
+  'lua',
+  'meta_engine',
+  'misc',
+  'notify',
+  'packetizer',
+  'services_discovery',
+  'spu',
+  'stream_extractor',
+  'stream_filter',
+  'text_renderer',
+  'video_chroma',
+  'video_filter',
+  'video_output',
+  'video_splitter',
+  'visualization',
+]
 
+if true # ENABLE_SOUT
+  plugins += [
+    'access_output',
+    'mux',
+    'stream_out',
+  ]
+endif
 
-# subdir('access')
-# subdir('access/http')
-# subdir('access/rtp')
-# subdir('arm_neon')
-# subdir('audio_filter')
-# subdir('audio_mixer')
-# subdir('audio_output')
-# subdir('codec')
-# subdir('control')
-# subdir('demux')
-# subdir('gui')
-# subdir('hw/d3d11')
-# subdir('hw/d3d9')
-# subdir('hw/vaapi')
-# subdir('hw/vdpau')
-# subdir('keystore')
-# subdir('logger')
-# subdir('lua')
-# subdir('meta_engine')
-# subdir('misc')
-# subdir('notify')
-# subdir('packetizer')
-# subdir('services_discovery')
-# subdir('spu')
-# subdir('stream_extractor')
-# subdir('stream_filter')
-# subdir('text_renderer')
-# subdir('video_chroma')
-# subdir('video_filter')
-# subdir('video_output')
-# subdir('video_splitter')
-# subdir('visualization')
+foreach plugin : plugins
+  plugin_dir = join_paths(get_option('libdir'), 'vlc', 'plugins', plugin)
+  subdir(plugin)
+endforeach
 
-# if true # HAVE_MMAL
-#   subdir('hw/mmal')
-# endif
-#
-# if true # ENABLE_SOUT
-#   subdir('access_output')
-#   subdir('mux')
-#   subdir('stream_out')
-# endif
+subdir('hw')

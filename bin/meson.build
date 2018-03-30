@@ -42,6 +42,7 @@ vlc_exe = executable('vlc',
   cpp_args:     vlc_cflags,
   link_with:    vlc_links,
   dependencies: vlc_deps,
+  install: true,
 )
 
 # Root wrapper
@@ -49,6 +50,7 @@ if not (platform_win64 or platform_os2)
   vlc_root_wrapper = executable('vlc-wrapper',
     'rootwrap.c',
     include_directories: rootInclude,
+    install: true,
   )
 endif
 
