@@ -11,7 +11,7 @@
     #pragma fenv_access(off)
     #pragma fp_contract(on)
 #elif defined(__GNUC__)
-    /* Not supported so far */
+    // Not supported so far
 #else
     #pragma STDC FENV_ACCESS OFF
     #pragma STDC FP_CONTRACT ON
@@ -22,7 +22,8 @@
 #endif
 
 #if defined(_WIN32) && !defined(_WIN32_WINNT)
-    #define _WIN32_WINNT 0x0601 /* Windows 7 */
+    // Windows 7
+    #define _WIN32_WINNT 0x0601
 #endif
 
 

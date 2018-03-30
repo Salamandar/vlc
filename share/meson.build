@@ -39,38 +39,24 @@ if not (platform_win64 or platform_osx)
   )
 endif
 
-
+###############################################################################
+# Icons
 if not platform_win64
-
-  install_data('icons/vlc.ico',
-    install_dir: join_paths(get_option('datadir'), 'vlc'),
-  )
-
-  install_subdir('icons',
-    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor'),
-    strip_directory: true,
-    exclude_files: [
-      'vlc.ico',
-      '16x16/vlc-xmas.png',
-      '16x16/vlc-xmas.xpm',
-      '32x32/vlc-xmas.png',
-    ],
-  )
-
-
-  install_subdir('utils',
-    install_dir: join_paths(get_option('datadir'), 'vlc'),
-  )
-
+  subdir('icons')
 endif
 
-
-if true # KDE_SOLID
-  install_subdir('solid',
-    install_dir: join_paths(get_option('datadir'), 'kde4', 'apps'),
-  )
+###############################################################################
+# Lua
+if true # build_lua
+  subdir('lua')
 endif
 
+###############################################################################
+# Profiles
+
+
+###############################################################################
+# Sinks2
 if true # BUILD_SKINS
   install_subdir('skins2',
     install_dir: join_paths(get_option('datadir'), 'vlc'),
@@ -102,6 +88,24 @@ if true # BUILD_SKINS
   )
 endif
 
-if true # build_lua
-  subdir('lua')
+
+###############################################################################
+# Solid
+if true # KDE_SOLID
+  install_subdir('solid',
+    install_dir: join_paths(get_option('datadir'),
+      'kde4', 'apps', 'solid', 'actions'),
+    strip_directory: true,
+  )
 endif
+
+###############################################################################
+# Utils
+if not platform_win64
+  install_subdir('utils',
+    install_dir: join_paths(get_option('datadir'), 'vlc'),
+  )
+endif
+
+###############################################################################
+# Visualisation

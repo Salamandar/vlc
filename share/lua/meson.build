@@ -1,6 +1,7 @@
 
-lua_outdir = join_paths(get_option('datadir'), 'vlc', 'lua')
+lua_outdir = join_paths(get_option( 'libdir'), 'vlc', 'lua')
 lua_docdir = join_paths(get_option('datadir'), 'doc', 'vlc', 'lua')
+lua_webdir = join_paths(get_option('datadir'), 'vlc', 'lua')
 
 luac_command = [
   find_program('luac'),
@@ -18,10 +19,7 @@ subdir('playlist')
 subdir('sd')
 
 install_subdir('http',
-  install_dir: join_paths(lua_outdir),
-  exclude_files: [
-    'requests/README.txt'
-  ]
+  install_dir: join_paths(lua_webdir),
 )
 
 doc_files = [

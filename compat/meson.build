@@ -1,5 +1,6 @@
 
 functions_checked = [
+  'backtrace',
   'fork',
   'getenv',
   'if_nameindex',
@@ -96,6 +97,8 @@ conf.set('HAVE_STATIC_ASSERT',    cc.has_header_symbol('assert.h',      'static_
 compat = static_library('compat',
   compat_sources,
   include_directories: rootInclude,
+  install: true,
+  install_dir: join_paths(get_option('libdir'), 'vlc'),
 )
 
 

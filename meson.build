@@ -25,6 +25,8 @@ pkgconfig = import('pkgconfig')
 ################################################################################
 # Version information
 
+gettext_package = 'vlc'
+
 version_rev = 0
 version_dev= 'dev'
 version_codename = 'Otto Chriek'
@@ -44,7 +46,7 @@ version_split = meson.project_version().split('.')
 conf.set('VERSION_MAJOR',   version_split[0])
 conf.set('VERSION_MINOR',   version_split[1])
 conf.set('VERSION_REVISION',version_split[2])
-
+conf.set('VERSION_EXTRA',   version_rev)
 
 conf.set_quoted('COPYRIGHT_MESSAGE',        copyright_message)
 conf.set_quoted('COPYRIGHT_YEARS',          copyright_years)
@@ -55,6 +57,9 @@ conf.set_quoted('PACKAGE_VERSION_REVISION', '@0@'.format(version_rev))
 conf.set_quoted('PACKAGE_VERSION_EXTRA',    version_split[2])
 conf.set_quoted('PACKAGE_VERSION_DEV',      version_dev)
 
+
+conf.set_quoted('TOP_BUILDDIR', meson.build_root())
+conf.set_quoted('TOP_SRCDIR',   meson.source_root())
 
 conf.set_quoted('VLC_COMPILE_BY',    run_command('whoami').stdout().strip())
 conf.set_quoted('VLC_COMPILE_HOST',  run_command('hostname', '-f').stdout().strip())
@@ -97,7 +102,9 @@ platform_tizen = cc.run('''
 int main() { return 0; }
 ''').compiled()
 
-
+if platform_win64
+  windows = import('windows')
+endif
 
 system_libs = []
 
@@ -241,11 +248,21 @@ c_args += [
 
 
 check_headers = [
+  'execinfo.h',
   'features.h',
+  'getopt.h',
   'netinet/tcp.h',
   'search.h',
   'threads.h',
   'pthread.h',
+  'arpa/inet.h',
+  'net/if.h',
+  'pthread.h',
+  'search.h',
+  'sys/shm.h',
+  'sys/socket.h',
+  'sys/uio.h',
+  'X11/Xlib.h',
 ]
 
 foreach header : check_headers
@@ -261,7 +278,30 @@ libanl  = cx.find_library('anl', required: false)
 
 if get_option('dbus')
   dbus = dependency('dbus-1')
+else
+  dbus = dependency('', required: false)
 endif
+conf.set('HAVE_DBUS', dbus.found())
+
+
+breakpad_url = get_option('breakpad-url')
+have_breakpad = (platform_win64 or platform_osx) and (breakpad_url != '')
+
+conf.set('HAVE_BREAKPAD', have_breakpad)
+conf.set_quoted('BREAKPAD_URL', breakpad_url)
+
+
+# conf.set('WORDS_BIGENDIAN', (host_machine.endian() == 'big'))
+# conf.set('__PLUGIN__', true)
+# conf.set('_FILE_OFFSET_BITS=64', true)
+# conf.set('_REENTRANT', true)
+# conf.set('_THREAD_SAFE', true)
+
+conf.set('HAVE_PROCESS_MITIGATION_IMAGE_LOAD_POLICY',
+  cx.has_header_symbol('windows.h', 'PROCESS_MITIGATION_IMAGE_LOAD_POLICY')
+)
+
+
 
 ################################################################################
 # Check for tools
@@ -272,9 +312,9 @@ desktop_file_validate = find_program('desktop-file-validate')
 
 # TODO
 have_dynamic_libs = true
+conf.set('HAVE_DYNAMIC_PLUGINS', have_dynamic_libs)
 
-# TODO
-have_dbus = true
+conf.set('ALLOW_RUN_AS_ROOT', get_option('run-as-root'))
 
 
 ################################################################################
@@ -300,10 +340,14 @@ configure_file(
   configuration: conf,
 )
 
-
+subdir('po')
 subdir('include')
 subdir('src')
 subdir('lib')
 subdir('bin')
+subdir('modules')
+
+subdir('doc')
+subdir('share')
 # 330
 

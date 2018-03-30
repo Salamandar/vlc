@@ -10,7 +10,7 @@ doc_files = [
 
 ]
 
-lua_subdir = join_paths('intf')
+lua_subdir = join_paths('modules')
 
 foreach lua_source : lua_files
   lua_binary = lua_source + 'c'

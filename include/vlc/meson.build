@@ -1,5 +1,5 @@
 
-configure_file(
+libvlc_version_h = configure_file(
   input : 'libvlc_version.h.in',
   output: 'libvlc_version.h',
   configuration: conf,
@@ -18,6 +18,7 @@ vlc_headers = [
   'libvlc_renderer_discoverer.h',
   'libvlc_vlm.h',
   'libvlc.h',
+  libvlc_version_h,
   'vlc.h',
 ]
 

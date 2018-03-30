@@ -68,12 +68,6 @@ libvlccore_cflags += [
   '-DMODULE_STRING="core"'
 ]
 
-if have_dynamic_libs
-  libvlccore_cflags += [ '-DHAVE_DYNAMIC_PLUGINS' ]
-endif
-if have_dbus
-  libvlccore_cflags += [ '-DHAVE_DBUS' ]
-endif
 
 
 
